@@ -1,8 +1,10 @@
 package com.example.plugins
 
 import com.example.gestion.Gestion
+import com.example.model.Etudiant
 import  io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
@@ -25,6 +27,29 @@ fun Application.configureRouting() {
                         call.respond(HttpStatusCode.NoContent)
                     }
                 }
+            }
+            post("/ajouter") {
+                var etudiant = call.receive<Etudiant>()
+                when(maGestion.ajouterEtudiant(etudiant)){
+                    1->{
+                        call.respond(HttpStatusCode.OK)
+                    }
+                    else->{
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+                }
+            }
+            delete("/Supprimer/{id}") {
+                var id = call.parameters["id"]
+                when(maGestion.supprimerEtudiant(id!!)){
+                    1->{
+                        call.respond(HttpStatusCode.OK)
+                    }
+                    else->{
+                        call.respond(HttpStatusCode.BadRequest)
+                    }
+                }
+
             }
 
         }
